@@ -27,6 +27,7 @@ into each empty folder we want to include to the repo.
 
 The most elegant approach I have found so far is to add F<.gitignore> file
 automatically in each empty folder:
+
 =begin man
 
     $ cd <repo_root_folder>
