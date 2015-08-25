@@ -1,44 +1,6 @@
-
 =pod
 
-=head1 NAME
-
-config_aspects.pod
-
-=head1 VERSION
-
-v.0.0.1
-
-=head1 DESCRIPTION
-
-Contains tips and snippets concerning Git configuration aspects,
-including local and remote(GitHub, bitbucket, etc. ) repositories.
-
-=head1 LOCAL
-
-=head2 Create repository for a project
-
-    <stub>
-
-=head2 Include the empty folders in a repository
-
-Git do not track empty folders by default, so the solution is just to put some file
-into each empty folder we want to include to the repo.
-
-The most elegant approach I have found so far is to add F<.gitignore> file
-automatically in each empty folder:
-
-    $ cd <repo_root_folder>
-    $ find . -type d -empty -not -path "./.git/*" -exec touch {}/.gitignore \;
-
-
-Thus, we not only add a dummy file to do the trick, but latter we can gain
-real usage from the .gitignore file, when we want to ignore files in this
-folder.
-
-=head1 GitHub
-
-=head2 Configure a git account to use its own SSH keys
+=head2 Configure remote git account to use its own SSH keys
 
 B<Next is useful when multiple git accounts would be used on same machine
 with multiple SSH keys>.
@@ -134,7 +96,7 @@ And add next block
 
     $ ssh -T git@github.com-GitRecycleBin
 
-=head4 Debug (if in need)
+=head4 Debug (if in trouble)
 
     $ ssh -vT git@github.com-GitRecycleBin
 
@@ -142,9 +104,7 @@ And add next block
 
 =head3 B<NB!>
 
-    You have to perform the above steps for each
-    account you've created, if you want it to use
-    own SSH key.
-
+You have to perform the above steps for each account you've created,
+if you want it to use own SSH key!
 
 =cut
