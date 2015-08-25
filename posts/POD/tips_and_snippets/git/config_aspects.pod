@@ -49,13 +49,13 @@ I<based on: https://gist.github.com/jexchan/2351996>
 
 Let's play next scenario: on my machine I want to have two github accounts:
 
-    - B<GitDefault>     # this will be the default git account
-    - B<GitRecycleBin>
+- B<GitDefault>     # this will be the default git account
+- B<GitRecycleBin>
 
 each using its own set of SSH keys:
 
-    - B<id_rsa>                     - for the B<GitDefault> account
-    - B<id_rsa_2048_recycle_bin>    - for the B<GitRecycleBin> account
+- B<id_rsa>                     - for the B<GitDefault> account
+- B<id_rsa_2048_recycle_bin>    - for the B<GitRecycleBin> account
 
 And of course, I want to have flawless SSH access to different repositories
 using these different accounts on same machine.
