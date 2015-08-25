@@ -63,18 +63,6 @@ using these different accounts on same machine.
 Follow: L<https://help.github.com/articles/generating-ssh-keys/>
 or shortly: L</"Create and configure SSH for another github account">
 
-If you intend to L</"Create and configure SSH for another github account"> on the same machine
-is good to tell git which will be the default SSH key to use:
-
-    $ subl ~/.ssh/config
-
-Add next block:
-
-    #Default git account
-    Host github.com
-    HostName github.com
-    User git
-    IdentityFile ~/.ssh/id_rsa.pub
 
 =head3 Create and configure SSH for another github account
 
@@ -113,19 +101,21 @@ And add next block
 
     #GitRecycleBin account
     Host github.com-GitRecycleBin
-    HostName github.com
-    User git
-    IdentityFile ~/.ssh/id_rsa_2048_recycle_bin
+        HostName github.com
+        User git
+        IdentityFile ~/.ssh/id_rsa_2048_recycle_bin
 
-
-
-=head3 Configure the git repo
+=head3 Configure git repo with GitRecycleBin account
 
 =over
 
 =item Go to your repo root folder
 
     $ cd ~/projects/RecycleBin/
+
+    If you have not associated the local repository with a remote, do
+
+    $ git remote add origin git@github.com-GitRecycleBin:GitRecycleBin/RecycleBin.git
 
 =item Edit git config file
 
