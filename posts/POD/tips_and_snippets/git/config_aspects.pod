@@ -1,0 +1,190 @@
+
+=pod
+
+=head1 NAME
+
+config_aspects.pod
+
+=head1 VERSION
+
+v.0.0.1
+
+=head1 DESCRIPTION
+
+Contains tips and snippets concerning Git configuration aspects,
+including local and remote(GitHub, bitbucket, etc. ) repositories.
+
+=head1 LOCAL
+
+=head2 Create repository for a project
+
+    <stub>
+
+=head2 Include the empty folders in a repository
+
+Git do not track empty folders by default, so the solution is just to put some file
+into each empty folder we want to include to the repo.
+
+The most elegant approach I have found so far is to add .gitignore file
+automatically in each empty folder:
+
+    $ cd <repo_root_folder>
+    $ find . -type d -empty -not -path "./.git/*" -exec touch {}/.gitignore \;
+
+
+Thus, we not only add a dummy file to do the trick, but latter we can gain
+real usage from the .gitignore file, when we want to ignore files in this
+folder.
+
+=head1 GitHub
+
+=head2 Configure a git account to use its own SSH keys
+
+B<Next is useful when multiple git accounts would be used on same machine
+with multiple SSH keys>.
+
+I<based on: https://gist.github.com/jexchan/2351996>
+
+=head3 Scenario
+
+Let's play next scenario: on my machine I want to have two github accounts:
+    - B<GitDefault>     # this will be the default git account
+    - B<GitRecycleBin>
+
+each using its own set of SSH keys:
+    - B<id_rsa>                     - for the B<GitDefault> account
+    - B<id_rsa_2048_recycle_bin>    - for the B<GitRecycleBin> account
+
+And of course, I want to have flawless SSH access to different repositories
+using these different accounts on same machine.
+
+=head3 Create and configure SSH keys for the B<GitDefault> account
+
+Follow: L<https://help.github.com/articles/generating-ssh-keys/>
+or shortly: L</"Create and configure SSH for another github account">
+
+If you intend to L</"Create and configure SSH for another github account"> on the same machine
+is good to tell git which will be the default SSH key to use:
+
+    $ subl ~/.ssh/config
+
+Add next block:
+
+    #Default git account
+    Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_rsa.pub
+
+=head3 Create and configure SSH for another github account
+
+Follow: L<https://help.github.com/articles/generating-ssh-keys/>
+or shortly:
+
+=over
+
+=item Generate a new SSH key for separate git account
+
+    $ ssh-keygen -t rsa -b 2048 -f id_rsa_2048_recycle_bin
+
+* you may comment the key by the option:
+
+    -C "your_email@example.com" # or whatever is meaningful for you
+
+=item Add the key to the ssh-agent
+
+    $ ssh-add id_rsa_2048_recycle_bin
+
+=item It is good to delete all cached keys before
+
+    $ ssh-add -D
+
+=item Check your active keys
+
+    $ ssh-add -l
+
+=back
+
+=head3 Tell git which key to use with the given account
+
+    $ sudo subl ~/.ssh/config
+
+And add next block
+
+    #GitRecycleBin account
+    Host github.com-GitRecycleBin
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_rsa_2048_recycle_bin
+
+
+
+=head3 Configure the git repo
+
+=over
+
+=item Go to your repo root folder
+
+    $ cd ~/projects/RecycleBin/
+
+=item Edit git config file
+
+    $ subl .git/config
+
+=item Modify the C<[remote "origin"]> section as:
+
+    [remote "origin"]
+        url = git@github.com-GitRecycleBin:GitRecycleBin/RecycleBin.git
+
+=back
+
+=head3 Test
+
+    $ ssh -T git@github.com-GitRecycleBin
+
+=head4 Debug (if in need)
+
+    $ ssh -vT git@github.com-GitRecycleBin
+
+
+
+=head3 B<NB!>
+
+    You have to perform the above steps for each
+    account you've created, if you want it to use
+    own SSH key.
+
+
+
+
+
+
+
+
+
+
+
+
+=head1 FUNCTIONS
+
+=for ### Next list documents the functions defined
+
+=over 6
+
+=item C<foo>
+
+=item C<bar>
+
+=back
+
+=head1 TODO
+
+=head1 AUTHOR
+
+    Iva E.Popova (iva.e.popova@gmail.com)
+
+=head1 COPYRIGHT AND LICENSE
+
+    2014, Artistic License 2.0
+
+=cut
