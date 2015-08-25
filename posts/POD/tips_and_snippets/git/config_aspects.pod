@@ -48,10 +48,12 @@ I<based on: https://gist.github.com/jexchan/2351996>
 =head3 Scenario
 
 Let's play next scenario: on my machine I want to have two github accounts:
+
     - B<GitDefault>     # this will be the default git account
     - B<GitRecycleBin>
 
 each using its own set of SSH keys:
+
     - B<id_rsa>                     - for the B<GitDefault> account
     - B<id_rsa_2048_recycle_bin>    - for the B<GitRecycleBin> account
 
@@ -144,37 +146,5 @@ And add next block
     account you've created, if you want it to use
     own SSH key.
 
-
-
-
-
-
-
-
-
-
-
-
-=head1 FUNCTIONS
-
-=for ### Next list documents the functions defined
-
-=over 6
-
-=item C<foo>
-
-=item C<bar>
-
-=back
-
-=head1 TODO
-
-=head1 AUTHOR
-
-    Iva E.Popova (iva.e.popova@gmail.com)
-
-=head1 COPYRIGHT AND LICENSE
-
-    2014, Artistic License 2.0
 
 =cut
