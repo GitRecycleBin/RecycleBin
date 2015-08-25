@@ -1,0 +1,19 @@
+=pod
+
+=head1 Include empty folders in a repository
+
+Git do not track empty folders by default, so the solution is just to put some
+dummy file into each empty folder we want to include to the repo.
+
+The most elegant approach I have found so far is to add F<.gitignore> file
+automatically in each empty folder:
+
+    $ cd <repo_root_folder>
+    $ find . -type d -empty -not -path "./.git/*" -exec touch {}/.gitignore \;
+
+
+Thus, we not only add a dummy file to do the trick, but latter we can gain
+real usage from the F<.gitignore> file, when we want to ignore files in that
+folder.
+
+=cut
