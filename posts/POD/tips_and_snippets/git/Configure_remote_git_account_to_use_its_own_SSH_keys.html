@@ -1,0 +1,154 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+
+<ul id="index">
+  <li>
+    <ul>
+      <li><a href="#Configure-remote-git-account-to-use-its-own-SSH-keys">Configure remote git account to use its own SSH keys</a>
+        <ul>
+          <li><a href="#Scenario">Scenario</a></li>
+          <li><a href="#Create-and-configure-SSH-keys-for-the-GitDefault-account">Create and configure SSH keys for the GitDefault account</a></li>
+          <li><a href="#Create-and-configure-SSH-for-another-github-account">Create and configure SSH for another github account</a></li>
+          <li><a href="#Tell-git-which-key-to-use-with-the-given-account">Tell git which key to use with the given account</a></li>
+          <li><a href="#Configure-git-repo-with-GitRecycleBin-account">Configure git repo with GitRecycleBin account</a></li>
+          <li><a href="#Test">Test</a>
+            <ul>
+              <li><a href="#Debug-if-in-trouble">Debug (if in trouble)</a></li>
+            </ul>
+          </li>
+          <li><a href="#NB">NB!</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="Configure-remote-git-account-to-use-its-own-SSH-keys">Configure remote git account to use its own SSH keys</h2>
+
+<p><b>Next is useful when multiple git accounts would be used on same machine with multiple SSH keys</b>.</p>
+
+<p><i>based on: https://gist.github.com/jexchan/2351996</i></p>
+
+<h3 id="Scenario">Scenario</h3>
+
+<p>Let&#39;s play next scenario: on my machine I want to have two github accounts:</p>
+
+<pre><code>    - GitDefault                 # this will be the default git account
+    - GitRecycleBin</code></pre>
+
+<p>each using its own set of SSH keys:</p>
+
+<pre><code>    - id_rsa                     # for the GitDefault account
+    - id_rsa_2048_recycle_bin    # for the GitRecycleBin account</code></pre>
+
+<p>And of course, I want to have flawless SSH access to different repositories using these different accounts on same machine.</p>
+
+<h3 id="Create-and-configure-SSH-keys-for-the-GitDefault-account">Create and configure SSH keys for the <b>GitDefault</b> account</h3>
+
+<p>Follow: <a href="https://help.github.com/articles/generating-ssh-keys/">https://help.github.com/articles/generating-ssh-keys/</a> or shortly: <a href="#Create-and-configure-SSH-for-another-github-account">&quot;Create and configure SSH for another github account&quot;</a></p>
+
+<h3 id="Create-and-configure-SSH-for-another-github-account">Create and configure SSH for another github account</h3>
+
+<p>Follow: <a href="https://help.github.com/articles/generating-ssh-keys/">https://help.github.com/articles/generating-ssh-keys/</a> or shortly:</p>
+
+<dl>
+
+<dt id="Generate-a-new-SSH-key-for-separate-git-account">Generate a new SSH key for separate git account</dt>
+<dd>
+
+<pre><code>    $ ssh-keygen -t rsa -b 2048 -f id_rsa_2048_recycle_bin</code></pre>
+
+<p>* you may comment the key by the option:</p>
+
+<pre><code>    -C &quot;your_email@example.com&quot; # or whatever is meaningful for you</code></pre>
+
+</dd>
+<dt id="Add-the-key-to-the-ssh-agent">Add the key to the ssh-agent</dt>
+<dd>
+
+<pre><code>    $ ssh-add id_rsa_2048_recycle_bin</code></pre>
+
+</dd>
+<dt id="It-is-good-to-delete-all-cached-keys-before">It is good to delete all cached keys before</dt>
+<dd>
+
+<pre><code>    $ ssh-add -D</code></pre>
+
+</dd>
+<dt id="Check-your-active-keys">Check your active keys</dt>
+<dd>
+
+<pre><code>    $ ssh-add -l</code></pre>
+
+</dd>
+</dl>
+
+<h3 id="Tell-git-which-key-to-use-with-the-given-account">Tell git which key to use with the given account</h3>
+
+<pre><code>    $ sudo subl ~/.ssh/config</code></pre>
+
+<p>And add next block</p>
+
+<pre><code>    #GitRecycleBin account
+    Host github.com-GitRecycleBin
+        HostName github.com
+        User git
+        IdentityFile ~/.ssh/id_rsa_2048_recycle_bin</code></pre>
+
+<h3 id="Configure-git-repo-with-GitRecycleBin-account">Configure git repo with GitRecycleBin account</h3>
+
+<dl>
+
+<dt id="Go-to-your-repo-root-folder">Go to your repo root folder</dt>
+<dd>
+
+<pre><code>    $ cd ~/projects/RecycleBin/
+
+    If you have not associated the local repository with a remote, do
+
+    $ git remote add origin git@github.com-GitRecycleBin:GitRecycleBin/RecycleBin.git</code></pre>
+
+</dd>
+<dt id="Edit-git-config-file">Edit git config file</dt>
+<dd>
+
+<pre><code>    $ subl .git/config</code></pre>
+
+</dd>
+<dt id="Modify-the-remote-origin-section-as">Modify the <code>[remote &quot;origin&quot;]</code> section as:</dt>
+<dd>
+
+<pre><code>    [remote &quot;origin&quot;]
+        url = git@github.com-GitRecycleBin:GitRecycleBin/RecycleBin.git</code></pre>
+
+</dd>
+</dl>
+
+<h3 id="Test">Test</h3>
+
+<pre><code>    $ ssh -T git@github.com-GitRecycleBin</code></pre>
+
+<h4 id="Debug-if-in-trouble">Debug (if in trouble)</h4>
+
+<pre><code>    $ ssh -vT git@github.com-GitRecycleBin</code></pre>
+
+<h3 id="NB"><b>NB!</b></h3>
+
+<p>You have to perform the above steps for each account you&#39;ve created, if you want it to use own SSH key!</p>
+
+
+</body>
+
+</html>
+
+
