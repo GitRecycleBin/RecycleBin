@@ -28,12 +28,8 @@ into each empty folder we want to include to the repo.
 The most elegant approach I have found so far is to add F<.gitignore> file
 automatically in each empty folder:
 
-=begin man
-
     $ cd <repo_root_folder>
     $ find . -type d -empty -not -path "./.git/*" -exec touch {}/.gitignore \;
-
-=end man
 
 
 Thus, we not only add a dummy file to do the trick, but latter we can gain
