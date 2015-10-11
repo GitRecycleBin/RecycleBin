@@ -1,0 +1,19 @@
+=pod
+
+=head1 Title
+
+Freedom? No, please!
+
+=head2 Start
+
+Here I will discuss the notion of freedom in the terms of programming languages.
+...
+
+=head3 Structure
+
+
+Python: imposes rules: You have to align
+
+Perl: as minimal as possible rules
+
+=cut
